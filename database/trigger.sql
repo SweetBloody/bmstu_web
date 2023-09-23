@@ -1,4 +1,5 @@
 -- Получение количества очков по гоночному результату гонщика
+
 create or replace function GetScore(place int)
 returns int
 as $$

@@ -1,14 +1,14 @@
 package http
 
 import (
-	"app/internal/app/middleware"
 	"encoding/json"
 	"fmt"
+	"github.com/SweetBloody/bmstu_web/backend/internal/app/middleware"
 	"github.com/gorilla/mux"
 	"net/http"
 	"strconv"
 
-	"app/internal/pkg/models"
+	"github.com/SweetBloody/bmstu_web/backend/internal/pkg/models"
 )
 
 type qualResultHandler struct {

@@ -1,6 +1,6 @@
-module app
+module github.com/SweetBloody/bmstu_web/backend
 
-go 1.18
+go 1.20
 
 require (
 	github.com/golang-jwt/jwt v3.2.2+incompatible

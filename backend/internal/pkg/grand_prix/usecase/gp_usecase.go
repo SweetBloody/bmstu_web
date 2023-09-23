@@ -1,7 +1,7 @@
 package usecase
 
 import (
-	"app/internal/pkg/models"
+	"github.com/SweetBloody/bmstu_web/backend/internal/pkg/models"
 )
 
 type grandPrixUsecase struct {

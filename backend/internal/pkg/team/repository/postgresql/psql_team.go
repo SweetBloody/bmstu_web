@@ -1,8 +1,8 @@
 package postgresql
 
 import (
-	"app/internal/pkg/models"
 	"fmt"
+	"github.com/SweetBloody/bmstu_web/backend/internal/pkg/models"
 	"github.com/jmoiron/sqlx"
 )
 

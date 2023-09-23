@@ -1,10 +1,10 @@
 package http
 
 import (
-	"app/internal/pkg/auth"
-	"app/internal/pkg/auth/token"
-	"app/internal/pkg/models"
 	"encoding/json"
+	"github.com/SweetBloody/bmstu_web/backend/internal/pkg/auth"
+	"github.com/SweetBloody/bmstu_web/backend/internal/pkg/auth/token"
+	"github.com/SweetBloody/bmstu_web/backend/internal/pkg/models"
 	"github.com/gorilla/mux"
 	"net/http"
 )

@@ -3,6 +3,8 @@ version: '3.7'
 volumes:
   postgres:
 
+# TODO: https://github.com/nextcloud/docker/issues/345
+
 services:
   postgres:
     container_name: course_db
@@ -12,7 +14,7 @@ services:
       POSTGRES_PASSWORD: postgresql
       PGDATA: /var/lib/postgresql/data
     volumes:
-        - postgresql:/var/lib/postgresql/data
+        - postgres:/var/lib/postgresql/data
         - .:/db_data
     ports:
         - 1000:5432

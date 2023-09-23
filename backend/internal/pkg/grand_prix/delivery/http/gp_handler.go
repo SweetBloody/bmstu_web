@@ -1,10 +1,10 @@
 package http
 
 import (
-	"app/internal/app/middleware"
-	"app/internal/pkg/models"
 	"encoding/json"
 	"fmt"
+	"github.com/SweetBloody/bmstu_web/backend/internal/app/middleware"
+	"github.com/SweetBloody/bmstu_web/backend/internal/pkg/models"
 	"github.com/gorilla/mux"
 	"net/http"
 	"strconv"

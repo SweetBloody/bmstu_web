@@ -1,7 +1,7 @@
 package token
 
 import (
-	"app/internal/pkg/models"
+	"github.com/SweetBloody/bmstu_web/backend/internal/pkg/models"
 	"github.com/golang-jwt/jwt"
 	"time"
 )

@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	tokenPkg "app/internal/pkg/auth/token"
 	"fmt"
+	tokenPkg "github.com/SweetBloody/bmstu_web/backend/internal/pkg/auth/token"
 	"github.com/golang-jwt/jwt"
 	"net/http"
 )
