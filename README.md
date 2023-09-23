@@ -79,9 +79,9 @@ Use-case диаграмма для роли админ:
 
 ## Черновые эскизы
 
-![1](img/Group%201.png)
-![2](img/Group%208.png)
-![3](img/Group%209.png)
-![4](img/Group%207.png)
-![5](img/Group%2015.png)
-![6](img/Group%2014.png)
+![1](img/Group-1.png)
+![2](img/Group-8.png)
+![3](img/Group-9.png)
+![4](img/Group-7.png)
+![5](img/Group-15.png)
+![6](img/Group-14.png)
