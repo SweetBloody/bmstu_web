@@ -553,6 +553,25 @@ paths:
           description: Invalid input
         '500':
           description: Status internal server error
+    post:
+      tags:
+        - race_results
+      summary: Create race result
+      description: ''
+      requestBody:
+        description: Create
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RaceResult'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid input
+        '500':
+          description: Status internal server error
   /api/grandprix/{id}/qual_results:
     get:
       tags:
@@ -580,35 +599,17 @@ paths:
           description: Invalid input
         '500':
           description: Status internal server error
-  /api/race_results:
-    get:
-      tags:
-        - race_results
-      summary: Get all race results
-      description: Returns all race results
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/RaceResultView'
-        '500':
-          description: Status internal server error
-
     post:
       tags:
-        - race_results
-      summary: Create race result
+        - qual_results
+      summary: Create qual result
       description: ''
       requestBody:
         description: Create
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RaceResult'
+              $ref: '#/components/schemas/QualResult'
         required: true
       responses:
         '200':
@@ -617,13 +618,20 @@ paths:
           description: Invalid input
         '500':
           description: Status internal server error
-  /api/race_results/{id}:
+  /api/grandprix/{gp_id}/race_results/{id}:
     get:
       tags:
         - race_results
       summary: Get race result
       description: Return race result by id
       parameters:
+        - name: gp_id
+          in: path
+          description: ID of gp
+          required: true
+          schema:
+            type: integer
+            format: int64
         - name: id
           in: path
           description: ID of race result
@@ -648,6 +656,13 @@ paths:
       summary: Update race result
       description: ''
       parameters:
+        - name: gp_id
+          in: path
+          description: ID of gp
+          required: true
+          schema:
+            type: integer
+            format: int64
         - name: id
           in: path
           description: ID of race result
@@ -675,6 +690,13 @@ paths:
       summary: Delete race result
       description: ''
       parameters:
+        - name: gp_id
+          in: path
+          description: ID of gp
+          required: true
+          schema:
+            type: integer
+            format: int64
         - name: id
           in: path
           description: ID of race result
@@ -686,51 +708,21 @@ paths:
         '200':
           description: Successful operation
         '500':
-          description: Status internal server error 
-  /api/qual_results:
-    get:
-      tags:
-        - qual_results
-      summary: Get all qual results
-      description: Returns all raqualce results
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/QualResultView'
-        '500':
           description: Status internal server error
-
-    post:
-      tags:
-        - qual_results
-      summary: Create qual result
-      description: ''
-      requestBody:
-        description: Create
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/QualResult'
-        required: true
-      responses:
-        '200':
-          description: Successful operation
-        '400':
-          description: Invalid input
-        '500':
-          description: Status internal server error
-  /api/qual_results/{id}:
+  /api/grandprix/{gp_id}/qual_results/{id}:
     get:
       tags:
         - qual_results
       summary: Get qual result
       description: Return qual result by id
       parameters:
+        - name: gp_id
+          in: path
+          description: ID of gp
+          required: true
+          schema:
+            type: integer
+            format: int64
         - name: id
           in: path
           description: ID of qual result
@@ -755,6 +747,13 @@ paths:
       summary: Update qual result
       description: ''
       parameters:
+        - name: gp_id
+          in: path
+          description: ID of gp
+          required: true
+          schema:
+            type: integer
+            format: int64
         - name: id
           in: path
           description: ID of qual result
@@ -782,6 +781,13 @@ paths:
       summary: Delete qual result
       description: ''
       parameters:
+        - name: gp_id
+          in: path
+          description: ID of gp
+          required: true
+          schema:
+            type: integer
+            format: int64
         - name: id
           in: path
           description: ID of qual result
@@ -947,13 +953,13 @@ components:
           example: 4
         q1_time:
           type: string
-          example: 1:20.443
+          example: '1:20.443'
         q2_time:
           type: string
-          example: 1:20.125
+          example: '1:20.125'
         q3_time:
           type: string
-          example: 1:19.998
+          example: '1:19.998'
         gp_id:
           type: integer
           format: int64
@@ -977,13 +983,13 @@ components:
           example: RedBull
         q1_time:
           type: string
-          example: 1:20.443
+          example: '1:20.443'
         q2_time:
           type: string
-          example: 1:20.125
+          example: '1:20.125'
         q3_time:
           type: string
-          example: 1:19.998
+          example: '1:19.998'
         gp_name:
           type: string
           example: SPA
