@@ -29,17 +29,7 @@
 
 ## Use-case диаграмма
 
-Use-case диаграмма для роли гость:
-
-![Гость](img/use_case_guest.png)
-
-Use-case диаграмма для авторизованного пользователя:
-
-![Авторизованный пользователь](img/use_case_user.png)
-
-Use-case диаграмма для роли админ:
-
-![Админ](img/use_case_admin.png)
+![Use-case](img/use_case.png)
 
 ## BPMN-диаграмма основных бизнес процессов
 
