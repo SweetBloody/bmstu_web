@@ -27,6 +27,15 @@ func NewTrackHandler(m *mux.Router, trackUsecase models.TrackUsecaseI) {
 	m.Handle("/api/tracks/{id}", middleware.AuthMiddleware(http.HandlerFunc(handler.Delete), "admin")).Methods("DELETE")
 }
 
+// @Summary Get all tracks
+// @Tags tracks
+// @Description Get all tracks
+// @ID get-all-tracks
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} models.Track
+// @Failure 500
+// @Router /api/tracks [get]
 func (handler *trackHandler) GetAll(w http.ResponseWriter, r *http.Request) {
 	encoder := json.NewEncoder(w)
 	tracks, err := handler.trackUsecase.GetAll()
@@ -41,6 +50,16 @@ func (handler *trackHandler) GetAll(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// @Summary Get track by id
+// @Tags tracks
+// @Description Get track by id
+// @ID get-track-by-id
+// @Accept  json
+// @Produce  json
+// @Param id path string true "id"
+// @Success 200 {object} models.Track
+// @Failure 500
+// @Router /api/tracks/{id} [get]
 func (handler *trackHandler) GetDriverById(w http.ResponseWriter, r *http.Request) {
 	encoder := json.NewEncoder(w)
 	vars := mux.Vars(r)
@@ -61,6 +80,17 @@ func (handler *trackHandler) GetDriverById(w http.ResponseWriter, r *http.Reques
 	}
 }
 
+// @Summary Create track
+// @Tags tracks
+// @Description create track
+// @ID create-track
+// @Accept  json
+// @Produce  json
+// @Param input body models.Track true "track info"
+// @Success 200
+// @Failure 400
+// @Failure 500
+// @Router /api/tracks [post]
 func (handler *trackHandler) Create(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 	track := new(models.Track)
@@ -83,6 +113,18 @@ func (handler *trackHandler) Create(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// @Summary Update track
+// @Tags tracks
+// @Description update track
+// @ID update-track
+// @Accept  json
+// @Produce  json
+// @Param id path string true "id"
+// @Param input body models.Track true "track info"
+// @Success 200
+// @Failure 400
+// @Failure 500
+// @Router /api/tracks/{id} [put]
 func (handler *trackHandler) Update(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
@@ -105,6 +147,16 @@ func (handler *trackHandler) Update(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// @Summary Delete track
+// @Tags tracks
+// @Description delete track
+// @ID delete-track
+// @Accept  json
+// @Produce  json
+// @Param id path string true "id"
+// @Success 200
+// @Failure 500
+// @Router /api/tracks/{id} [delete]
 func (handler *trackHandler) Delete(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])

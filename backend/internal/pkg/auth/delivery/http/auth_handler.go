@@ -22,6 +22,17 @@ func NewAuthHandler(m *mux.Router, userUsecase models.UserUsecaseI) {
 	m.HandleFunc("/auth/logout", handler.LogOut).Methods("DELETE")
 }
 
+// @Summary Log in
+// @Tags auth
+// @Description User log in
+// @ID auth-log-in
+// @Accept  json
+// @Produce  json
+// @Param input body auth.LogInData true "account info"
+// @Success 200 {object} string "Logged in successfully!"
+// @Failure 400,401
+// @Failure 500
+// @Router /auth/login [post]
 func (handler *authHandler) LogIn(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 	loginData := new(auth.LogInData)
@@ -59,6 +70,16 @@ func (handler *authHandler) LogIn(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Logged in successfully!"))
 }
 
+// @Summary Register
+// @Tags auth
+// @Description New user register
+// @ID auth-register
+// @Accept  json
+// @Produce  json
+// @Param input body models.User true "account info"
+// @Success 200
+// @Failure 500
+// @Router /auth/register [post]
 func (handler *authHandler) Register(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 	user := new(models.User)
@@ -81,6 +102,14 @@ func (handler *authHandler) Register(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// @Summary Log out
+// @Tags auth
+// @Description User log out
+// @ID auth-log-out
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} string "Logged out successfully!"
+// @Router /auth/logout [delete]
 func (handler *authHandler) LogOut(w http.ResponseWriter, r *http.Request) {
 	cookie := http.Cookie{
 		Name:   "jwt-token",

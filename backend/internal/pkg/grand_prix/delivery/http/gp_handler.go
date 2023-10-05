@@ -27,10 +27,10 @@ func NewDriverHandler(m *mux.Router,
 	}
 
 	m.HandleFunc("/api/grandprix", handler.GetAll).Methods("GET")
-	m.HandleFunc("/api/grandprix/id/{id}", handler.GetGPById).Methods("GET")
+	//m.HandleFunc("/api/grandprix/id/{id}", handler.GetGPById).Methods("GET")
 	m.HandleFunc("/api/grandprix/{id}", handler.GetGPById).Methods("GET")
 	m.HandleFunc("/api/grandprix/season/{season}", handler.GetAllBySeason).Methods("GET")
-	m.HandleFunc("/api/grandprix/place/{place}", handler.GetAllByPlace).Methods("GET")
+	//m.HandleFunc("/api/grandprix/place/{place}", handler.GetAllByPlace).Methods("GET")
 	m.Handle("/api/grandprix", middleware.AuthMiddleware(http.HandlerFunc(handler.Create), "admin")).Methods("POST")
 	m.Handle("/api/grandprix/{id}", middleware.AuthMiddleware(http.HandlerFunc(handler.Update), "admin")).Methods("PUT")
 	m.Handle("/api/grandprix/{id}", middleware.AuthMiddleware(http.HandlerFunc(handler.Delete), "admin")).Methods("DELETE")
@@ -39,6 +39,15 @@ func NewDriverHandler(m *mux.Router,
 	m.HandleFunc("/api/grandprix/{id}/race_winner", handler.GetRaceWinnerOfGP).Methods("GET")
 }
 
+// @Summary Get all gp
+// @Tags gp
+// @Description Get all gp
+// @ID get-all-gp
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} models.GrandPrix
+// @Failure 500
+// @Router /api/grandprix [get]
 func (handler *grandPrixHandler) GetAll(w http.ResponseWriter, r *http.Request) {
 	encoder := json.NewEncoder(w)
 	gp, err := handler.grandPrixUsecase.GetAll()
@@ -53,6 +62,17 @@ func (handler *grandPrixHandler) GetAll(w http.ResponseWriter, r *http.Request) 
 	}
 }
 
+// @Summary Get gp by id
+// @Tags gp
+// @Description Get gp by id
+// @ID get-gp-by-id
+// @Accept  json
+// @Produce  json
+// @Param id path string true "id"
+// @Success 200 {object} models.GrandPrix
+// @Failure 400
+// @Failure 500
+// @Router /api/grandprix/{id} [get]
 func (hander *grandPrixHandler) GetGPById(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
@@ -73,6 +93,17 @@ func (hander *grandPrixHandler) GetGPById(w http.ResponseWriter, r *http.Request
 	}
 }
 
+// @Summary Get gp by season
+// @Tags gp
+// @Description Get gp by season
+// @ID get-gp-by-season
+// @Accept  json
+// @Produce  json
+// @Param season path string true "season"
+// @Success 200 {object} models.GrandPrix
+// @Failure 400
+// @Failure 500
+// @Router /api/grandprix/season/{season} [get]
 func (hander *grandPrixHandler) GetAllBySeason(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	season, err := strconv.Atoi(vars["season"])
@@ -93,22 +124,33 @@ func (hander *grandPrixHandler) GetAllBySeason(w http.ResponseWriter, r *http.Re
 	}
 }
 
-func (hander *grandPrixHandler) GetAllByPlace(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	place := vars["place"]
-	encoder := json.NewEncoder(w)
-	gp, err := hander.grandPrixUsecase.GetAllByPlace(place)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	err = encoder.Encode(gp)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-}
+//func (hander *grandPrixHandler) GetAllByPlace(w http.ResponseWriter, r *http.Request) {
+//	vars := mux.Vars(r)
+//	place := vars["place"]
+//	encoder := json.NewEncoder(w)
+//	gp, err := hander.grandPrixUsecase.GetAllByPlace(place)
+//	if err != nil {
+//		http.Error(w, err.Error(), http.StatusInternalServerError)
+//		return
+//	}
+//	err = encoder.Encode(gp)
+//	if err != nil {
+//		http.Error(w, err.Error(), http.StatusInternalServerError)
+//		return
+//	}
+//}
 
+// @Summary Create gp
+// @Tags gp
+// @Description Create gp
+// @ID create-gp
+// @Accept  json
+// @Produce  json
+// @Param input body models.GrandPrix true "GP info"
+// @Success 200
+// @Failure 400
+// @Failure 500
+// @Router /api/grandprix [post]
 func (handler *grandPrixHandler) Create(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 	gp := new(models.GrandPrix)
@@ -130,6 +172,18 @@ func (handler *grandPrixHandler) Create(w http.ResponseWriter, r *http.Request) 
 	}
 }
 
+// @Summary Update gp
+// @Tags gp
+// @Description Update gp
+// @ID update-gp
+// @Accept  json
+// @Produce  json
+// @Param id path string true "id"
+// @Param input body models.GrandPrix true "GP info"
+// @Success 200
+// @Failure 400
+// @Failure 500
+// @Router /api/grandprix/{id} [put]
 func (handler *grandPrixHandler) Update(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
@@ -152,6 +206,17 @@ func (handler *grandPrixHandler) Update(w http.ResponseWriter, r *http.Request) 
 	}
 }
 
+// @Summary Delete gp
+// @Tags gp
+// @Description delete gp
+// @ID delete-gp
+// @Accept  json
+// @Produce  json
+// @Param id path string true "id"
+// @Success 200
+// @Failure 400
+// @Failure 500
+// @Router /api/grandprix/{id} [delete]
 func (handler *grandPrixHandler) Delete(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
@@ -166,6 +231,17 @@ func (handler *grandPrixHandler) Delete(w http.ResponseWriter, r *http.Request) 
 	}
 }
 
+// @Summary Get raceresults of gp
+// @Tags gp
+// @Description Get raceresults of gp
+// @ID get-race-of-gp
+// @Accept  json
+// @Produce  json
+// @Param id path string true "id"
+// @Success 200 {object} models.RaceResultView
+// @Failure 400
+// @Failure 500
+// @Router /api/grandprix/{id}/race_results [get]
 func (handler *grandPrixHandler) GetRaceResultsOfGP(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
@@ -185,6 +261,17 @@ func (handler *grandPrixHandler) GetRaceResultsOfGP(w http.ResponseWriter, r *ht
 	}
 }
 
+// @Summary Get qualresults of gp
+// @Tags gp
+// @Description Get qualresults of gp
+// @ID get-qual-of-gp
+// @Accept  json
+// @Produce  json
+// @Param id path string true "id"
+// @Success 200 {object} models.QualResultView
+// @Failure 400
+// @Failure 500
+// @Router /api/grandprix/{id}/qual_results [get]
 func (handler *grandPrixHandler) GetQualResultsOfGP(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
@@ -204,6 +291,17 @@ func (handler *grandPrixHandler) GetQualResultsOfGP(w http.ResponseWriter, r *ht
 	}
 }
 
+// @Summary Get race winner of gp
+// @Tags gp
+// @Description Get race winner of gp
+// @ID get-race-winner-of-gp
+// @Accept  json
+// @Produce  json
+// @Param id path string true "id"
+// @Success 200 {object} models.RaceResultView
+// @Failure 400
+// @Failure 500
+// @Router /api/grandprix/{id}/race_winner [get]
 func (handler *grandPrixHandler) GetRaceWinnerOfGP(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])

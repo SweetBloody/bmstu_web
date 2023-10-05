@@ -22,7 +22,7 @@ func NewTeamHandler(m *mux.Router, teamUsecase models.TeamUsecaseI) {
 	}
 
 	m.Handle("/api/teams", middleware.AuthMiddleware(http.HandlerFunc(handler.GetAll), "admin", "user")).Methods("GET")
-	m.Handle("/api/teams/{id}", middleware.AuthMiddleware(http.HandlerFunc(handler.GetDriverById), "admin", "user")).Methods("GET")
+	m.Handle("/api/teams/{id}", middleware.AuthMiddleware(http.HandlerFunc(handler.GetTeamById), "admin", "user")).Methods("GET")
 	m.Handle("/api/teams_of_season", middleware.AuthMiddleware(http.HandlerFunc(handler.GetTeamsOfSeason), "admin", "user")).Methods("GET")
 	m.Handle("/api/teams_of_season/{season}", middleware.AuthMiddleware(http.HandlerFunc(handler.GetTeamsOfSeason), "admin", "user")).Methods("GET")
 	m.Handle("/api/teams", middleware.AuthMiddleware(http.HandlerFunc(handler.Create), "admin")).Methods("POST")
@@ -30,6 +30,15 @@ func NewTeamHandler(m *mux.Router, teamUsecase models.TeamUsecaseI) {
 	m.Handle("/api/teams/{id}", middleware.AuthMiddleware(http.HandlerFunc(handler.Delete), "admin")).Methods("DELETE")
 }
 
+// @Summary Get all teams
+// @Tags teams
+// @Description Get all teams
+// @ID get-all-teams
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} models.Team
+// @Failure 500
+// @Router /api/teams [get]
 func (handler *teamHandler) GetAll(w http.ResponseWriter, r *http.Request) {
 	encoder := json.NewEncoder(w)
 	teams, err := handler.teamUsecase.GetAll()
@@ -44,7 +53,17 @@ func (handler *teamHandler) GetAll(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (handler *teamHandler) GetDriverById(w http.ResponseWriter, r *http.Request) {
+// @Summary Get team by id
+// @Tags teams
+// @Description Get team by id
+// @ID get-team-by-id
+// @Accept  json
+// @Produce  json
+// @Param id path string true "id"
+// @Success 200 {object} models.Team
+// @Failure 500
+// @Router /api/team/{id} [get]
+func (handler *teamHandler) GetTeamById(w http.ResponseWriter, r *http.Request) {
 	encoder := json.NewEncoder(w)
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
@@ -64,6 +83,17 @@ func (handler *teamHandler) GetDriverById(w http.ResponseWriter, r *http.Request
 	}
 }
 
+// @Summary Get teams by season
+// @Tags teams
+// @Description Get teams by season
+// @ID get-teams-by-season
+// @Accept  json
+// @Produce  json
+// @Param season path string true "season"
+// @Success 200 {object} models.Team
+// @Failure 400
+// @Failure 500
+// @Router /api/teams/{season} [get]
 func (handler *teamHandler) GetTeamsOfSeason(w http.ResponseWriter, r *http.Request) {
 	var season int
 	var err error
@@ -90,6 +120,17 @@ func (handler *teamHandler) GetTeamsOfSeason(w http.ResponseWriter, r *http.Requ
 	}
 }
 
+// @Summary Create team
+// @Tags teams
+// @Description Create team
+// @ID create-team
+// @Accept  json
+// @Produce  json
+// @Param input body models.Team true "team info"
+// @Success 200
+// @Failure 400
+// @Failure 500
+// @Router /api/teams [post]
 func (handler *teamHandler) Create(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 	team := new(models.Team)
@@ -112,6 +153,18 @@ func (handler *teamHandler) Create(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// @Summary Update team
+// @Tags teams
+// @Description update teams
+// @ID update-teams
+// @Accept  json
+// @Produce  json
+// @Param id path string true "id"
+// @Param input body models.Team true "team info"
+// @Success 200
+// @Failure 400
+// @Failure 500
+// @Router /api/teams/{id} [put]
 func (handler *teamHandler) Update(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
@@ -134,6 +187,16 @@ func (handler *teamHandler) Update(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// @Summary Delete team
+// @Tags teams
+// @Description delete team
+// @ID delete-team
+// @Accept  json
+// @Produce  json
+// @Param id path string true "id"
+// @Success 200
+// @Failure 500
+// @Router /api/teams/{id} [delete]
 func (handler *teamHandler) Delete(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])

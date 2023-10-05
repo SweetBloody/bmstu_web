@@ -32,6 +32,15 @@ func NewDriverHandler(m *mux.Router, driverUsecase models.DriverUsecaseI) {
 	m.Handle("/api/drivers_teams", middleware.AuthMiddleware(http.HandlerFunc(handler.LinkDriverTeam), "admin")).Methods("POST")
 }
 
+// @Summary Get all drivers
+// @Tags drivers
+// @Description Get all drivers
+// @ID get-all-drivers
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} models.Driver
+// @Failure 500
+// @Router /api/drivers [get]
 func (handler *driverHandler) GetAll(w http.ResponseWriter, r *http.Request) {
 	encoder := json.NewEncoder(w)
 	drivers, err := handler.driverUsecase.GetAll()
@@ -46,6 +55,17 @@ func (handler *driverHandler) GetAll(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// @Summary Get driver by id
+// @Tags drivers
+// @Description Get driver by id
+// @ID get-driver-by-id
+// @Accept  json
+// @Produce  json
+// @Param id path string true "id"
+// @Success 200 {object} models.Driver
+// @Failure 400
+// @Failure 500
+// @Router /api/drivers/{id} [get]
 func (handler *driverHandler) GetDriverById(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
@@ -66,6 +86,17 @@ func (handler *driverHandler) GetDriverById(w http.ResponseWriter, r *http.Reque
 	}
 }
 
+// @Summary Get driver by season
+// @Tags drivers
+// @Description Get driver by season
+// @ID get-driver-by-season
+// @Accept  json
+// @Produce  json
+// @Param season path string true "season"
+// @Success 200 {object} models.Driver
+// @Failure 400
+// @Failure 500
+// @Router /api/drivers/{season} [get]
 func (handler *driverHandler) GetDriversOfSeason(w http.ResponseWriter, r *http.Request) {
 	var season int
 	var err error
@@ -92,6 +123,15 @@ func (handler *driverHandler) GetDriversOfSeason(w http.ResponseWriter, r *http.
 	}
 }
 
+// @Summary Get drivers standings
+// @Tags drivers
+// @Description Get drivers standings
+// @ID get-drivers-standings
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} models.Standings
+// @Failure 500
+// @Router /api/drivers_standing [get]
 func (handler *driverHandler) GetDriversStanding(w http.ResponseWriter, r *http.Request) {
 	encoder := json.NewEncoder(w)
 	standing, err := handler.driverUsecase.GetDriversStanding()
@@ -106,6 +146,17 @@ func (handler *driverHandler) GetDriversStanding(w http.ResponseWriter, r *http.
 	}
 }
 
+// @Summary Create driver
+// @Tags drivers
+// @Description Create driver
+// @ID create-driver
+// @Accept  json
+// @Produce  json
+// @Param input body models.Driver true "driver info"
+// @Success 200
+// @Failure 400
+// @Failure 500
+// @Router /api/drivers [post]
 func (handler *driverHandler) Create(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 	driver := new(models.Driver)
@@ -128,6 +179,18 @@ func (handler *driverHandler) Create(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// @Summary Update driver
+// @Tags drivers
+// @Description Update driver
+// @ID update-driver
+// @Accept  json
+// @Produce  json
+// @Param id path string true "id"
+// @Param input body models.Driver true "driver info"
+// @Success 200
+// @Failure 400
+// @Failure 500
+// @Router /api/drivers/{id} [put]
 func (handler *driverHandler) Update(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
@@ -149,6 +212,17 @@ func (handler *driverHandler) Update(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// @Summary Delete driver
+// @Tags drivers
+// @Description delete driver
+// @ID delete-driver
+// @Accept  json
+// @Produce  json
+// @Param id path string true "id"
+// @Success 200
+// @Failure 400
+// @Failure 500
+// @Router /api/drivers/{id} [delete]
 func (handler *driverHandler) Delete(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
@@ -163,6 +237,17 @@ func (handler *driverHandler) Delete(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// @Summary Link driver team
+// @Tags drivers
+// @Description Link driver team
+// @ID link-driver-team
+// @Accept  json
+// @Produce  json
+// @Param input body models.DriversTeams true "driver-team connection info"
+// @Success 200
+// @Failure 400
+// @Failure 500
+// @Router /api/drivers_teams [post]
 func (handler *driverHandler) LinkDriverTeam(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 	link := new(models.DriversTeams)

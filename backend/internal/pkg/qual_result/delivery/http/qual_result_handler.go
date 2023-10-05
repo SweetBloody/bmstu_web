@@ -20,26 +20,26 @@ func NewQualResultHandler(m *mux.Router, qualResultUsecase models.QualResultUsec
 		qualResultUsecase: qualResultUsecase,
 	}
 
-	m.Handle("/api/qual_results", middleware.AuthMiddleware(http.HandlerFunc(handler.Create), "admin")).Methods("POST")
-	m.Handle("/api/qual_results", middleware.AuthMiddleware(http.HandlerFunc(handler.GetAll), "admin", "user")).Methods("GET")
-	m.Handle("/api/qual_results/{id}", middleware.AuthMiddleware(http.HandlerFunc(handler.GetQualResultById), "admin", "user")).Methods("GET")
-	m.Handle("/api/qual_results/{id}", middleware.AuthMiddleware(http.HandlerFunc(handler.Update), "admin")).Methods("PUT")
-	m.Handle("/api/qual_results/{id}", middleware.AuthMiddleware(http.HandlerFunc(handler.Delete), "admin")).Methods("DELETE")
+	m.Handle("/api/grandprix/{gp_id}/qual_results", middleware.AuthMiddleware(http.HandlerFunc(handler.Create), "admin")).Methods("POST")
+	//m.Handle("/api/qual_results", middleware.AuthMiddleware(http.HandlerFunc(handler.GetAll), "admin", "user")).Methods("GET")
+	//m.Handle("/api/grandprix/{gp_id}/qual_results/{id}", middleware.AuthMiddleware(http.HandlerFunc(handler.GetQualResultById), "admin", "user")).Methods("GET")
+	m.Handle("/api/grandprix/{gp_id}/qual_results/{id}", middleware.AuthMiddleware(http.HandlerFunc(handler.Update), "admin")).Methods("PUT")
+	m.Handle("/api/grandprix/{gp_id}/qual_results/{id}", middleware.AuthMiddleware(http.HandlerFunc(handler.Delete), "admin")).Methods("DELETE")
 }
 
-func (handler *qualResultHandler) GetAll(w http.ResponseWriter, r *http.Request) {
-	encoder := json.NewEncoder(w)
-	results, err := handler.qualResultUsecase.GetAll()
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	err = encoder.Encode(results)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-}
+//func (handler *qualResultHandler) GetAll(w http.ResponseWriter, r *http.Request) {
+//	encoder := json.NewEncoder(w)
+//	results, err := handler.qualResultUsecase.GetAll()
+//	if err != nil {
+//		http.Error(w, err.Error(), http.StatusInternalServerError)
+//		return
+//	}
+//	err = encoder.Encode(results)
+//	if err != nil {
+//		http.Error(w, err.Error(), http.StatusInternalServerError)
+//		return
+//	}
+//}
 
 func (handler *qualResultHandler) GetQualResultById(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
@@ -61,6 +61,18 @@ func (handler *qualResultHandler) GetQualResultById(w http.ResponseWriter, r *ht
 	}
 }
 
+// @Summary Create qual_result
+// @Tags qual_results
+// @Description Create qual_result
+// @ID create-qual_result
+// @Accept  json
+// @Produce  json
+// @Param gp_id path string true "gp_id"
+// @Param input body models.QualResult true "qual result info"
+// @Success 200
+// @Failure 400
+// @Failure 500
+// @Router /api/grandprix/{gp_id}/qual_results [post]
 func (handler *qualResultHandler) Create(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 	result := new(models.QualResult)
@@ -83,6 +95,19 @@ func (handler *qualResultHandler) Create(w http.ResponseWriter, r *http.Request)
 	}
 }
 
+// @Summary Update qual_result
+// @Tags qual_results
+// @Description Update qual_result
+// @ID update-qual_result
+// @Accept  json
+// @Produce  json
+// @Param gp_id path string true "gp_id"
+// @Param id path string true "id"
+// @Param input body models.QualResult true "qual result info"
+// @Success 200
+// @Failure 400
+// @Failure 500
+// @Router /api/grandprix/{gp_id}/qual_results/{id} [put]
 func (handler *qualResultHandler) Update(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
@@ -105,6 +130,18 @@ func (handler *qualResultHandler) Update(w http.ResponseWriter, r *http.Request)
 	}
 }
 
+// @Summary Delete qual_result
+// @Tags qual_results
+// @Description delete qual_result
+// @ID delete-qual_result
+// @Accept  json
+// @Produce  json
+// @Param gp_id path string true "gp_id"
+// @Param id path string true "id"
+// @Success 200
+// @Failure 400
+// @Failure 500
+// @Router /api/grandprix/{gp_id}/qual_results/{id} [delete]
 func (handler *qualResultHandler) Delete(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])

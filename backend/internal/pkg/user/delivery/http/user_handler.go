@@ -25,6 +25,17 @@ func NewUserHandler(m *mux.Router, userUsecase models.UserUsecaseI) {
 	m.Handle("/api/users/{id}", middleware.AuthMiddleware(http.HandlerFunc(handler.Delete), "admin")).Methods("DELETE")
 }
 
+// @Summary Create user
+// @Tags users
+// @Description create user
+// @ID create-user
+// @Accept  json
+// @Produce  json
+// @Param input body models.User true "user info"
+// @Success 200
+// @Failure 400
+// @Failure 500
+// @Router /api/users [post]
 func (handler *userHandler) Create(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 	user := new(models.User)
@@ -47,6 +58,18 @@ func (handler *userHandler) Create(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// @Summary Update user
+// @Tags users
+// @Description update user
+// @ID update-user
+// @Accept  json
+// @Produce  json
+// @Param id path string true "id"
+// @Param input body models.User true "user info"
+// @Success 200
+// @Failure 400
+// @Failure 500
+// @Router /api/users/{id} [put]
 func (handler *userHandler) Update(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
@@ -69,6 +92,16 @@ func (handler *userHandler) Update(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// @Summary Delete user
+// @Tags users
+// @Description delete user
+// @ID delete-user
+// @Accept  json
+// @Produce  json
+// @Param id path string true "id"
+// @Success 200
+// @Failure 500
+// @Router /api/users/{id} [delete]
 func (handler *userHandler) Delete(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])

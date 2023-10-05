@@ -1,0 +1,1165 @@
+basePath: /
+definitions:
+  auth.LogInData:
+    properties:
+      login:
+        type: string
+      password:
+        type: string
+    type: object
+  models.Driver:
+    properties:
+      driver_birth_date:
+        type: string
+      driver_country:
+        type: string
+      driver_id:
+        type: integer
+      driver_name:
+        type: string
+    type: object
+  models.DriversTeams:
+    properties:
+      driver_id:
+        type: integer
+      team_driver_season:
+        type: integer
+      team_id:
+        type: integer
+    type: object
+  models.GrandPrix:
+    properties:
+      gp_date_num:
+        type: integer
+      gp_id:
+        type: integer
+      gp_month:
+        type: string
+      gp_name:
+        type: string
+      gp_place:
+        type: string
+      gp_season:
+        type: integer
+      gp_track_id:
+        type: integer
+    type: object
+  models.QualResult:
+    properties:
+      gp_id:
+        type: integer
+      q1_time:
+        type: string
+      q2_time:
+        type: string
+      q3_time:
+        type: string
+      qual_driver_id:
+        type: integer
+      qual_driver_place:
+        type: integer
+      qual_id:
+        type: integer
+      qual_team_id:
+        type: integer
+    type: object
+  models.QualResultView:
+    properties:
+      driver_name:
+        type: string
+      gp_name:
+        type: string
+      q1_time:
+        type: string
+      q2_time:
+        type: string
+      q3_time:
+        type: string
+      qual_driver_place:
+        type: integer
+      qual_id:
+        type: integer
+      team_name:
+        type: string
+    type: object
+  models.RaceResult:
+    properties:
+      gp_id:
+        type: integer
+      race_driver_id:
+        type: integer
+      race_driver_place:
+        type: integer
+      race_id:
+        type: integer
+      race_team_id:
+        type: integer
+    type: object
+  models.RaceResultView:
+    properties:
+      driver_name:
+        type: string
+      gp_name:
+        type: string
+      race_driver_place:
+        type: integer
+      race_id:
+        type: integer
+      team_name:
+        type: string
+    type: object
+  models.Standings:
+    properties:
+      driver_name:
+        type: string
+      score:
+        type: integer
+      season:
+        type: integer
+      st_id:
+        type: integer
+      team_name:
+        type: string
+    type: object
+  models.Team:
+    properties:
+      team_base:
+        type: string
+      team_country:
+        type: string
+      team_id:
+        type: integer
+      team_name:
+        type: string
+    type: object
+  models.Track:
+    properties:
+      track_country:
+        type: string
+      track_id:
+        type: integer
+      track_name:
+        type: string
+      track_town:
+        type: string
+    type: object
+  models.User:
+    properties:
+      login:
+        type: string
+      password:
+        type: string
+      role:
+        type: string
+      user_id:
+        type: integer
+    type: object
+host: localhost:5259
+info:
+  contact: {}
+  description: API Server for F1 Grand-Prix info
+  termsOfService: http://swagger.io/terms/
+  title: FormulOne Web-Server
+  version: "1.0"
+paths:
+  /api/drivers:
+    get:
+      consumes:
+      - application/json
+      description: Get all drivers
+      operationId: get-all-drivers
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Driver'
+        "500":
+          description: Internal Server Error
+      summary: Get all drivers
+      tags:
+      - drivers
+    post:
+      consumes:
+      - application/json
+      description: Create driver
+      operationId: create-driver
+      parameters:
+      - description: driver info
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.Driver'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Create driver
+      tags:
+      - drivers
+  /api/drivers/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete driver
+      operationId: delete-driver
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Delete driver
+      tags:
+      - drivers
+    get:
+      consumes:
+      - application/json
+      description: Get driver by id
+      operationId: get-driver-by-id
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Driver'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Get driver by id
+      tags:
+      - drivers
+    put:
+      consumes:
+      - application/json
+      description: Update driver
+      operationId: update-driver
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: driver info
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.Driver'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Update driver
+      tags:
+      - drivers
+  /api/drivers/{season}:
+    get:
+      consumes:
+      - application/json
+      description: Get driver by season
+      operationId: get-driver-by-season
+      parameters:
+      - description: season
+        in: path
+        name: season
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Driver'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Get driver by season
+      tags:
+      - drivers
+  /api/drivers_standing:
+    get:
+      consumes:
+      - application/json
+      description: Get drivers standings
+      operationId: get-drivers-standings
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Standings'
+        "500":
+          description: Internal Server Error
+      summary: Get drivers standings
+      tags:
+      - drivers
+  /api/drivers_teams:
+    post:
+      consumes:
+      - application/json
+      description: Link driver team
+      operationId: link-driver-team
+      parameters:
+      - description: driver-team connection info
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.DriversTeams'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Link driver team
+      tags:
+      - drivers
+  /api/grandprix:
+    get:
+      consumes:
+      - application/json
+      description: Get all gp
+      operationId: get-all-gp
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GrandPrix'
+        "500":
+          description: Internal Server Error
+      summary: Get all gp
+      tags:
+      - gp
+    post:
+      consumes:
+      - application/json
+      description: Create gp
+      operationId: create-gp
+      parameters:
+      - description: GP info
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.GrandPrix'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Create gp
+      tags:
+      - gp
+  /api/grandprix/{gp_id}/qual_results:
+    post:
+      consumes:
+      - application/json
+      description: Create qual_result
+      operationId: create-qual_result
+      parameters:
+      - description: gp_id
+        in: path
+        name: gp_id
+        required: true
+        type: string
+      - description: qual result info
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.QualResult'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Create qual_result
+      tags:
+      - qual_results
+  /api/grandprix/{gp_id}/qual_results/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete qual_result
+      operationId: delete-qual_result
+      parameters:
+      - description: gp_id
+        in: path
+        name: gp_id
+        required: true
+        type: string
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Delete qual_result
+      tags:
+      - qual_results
+    put:
+      consumes:
+      - application/json
+      description: Update qual_result
+      operationId: update-qual_result
+      parameters:
+      - description: gp_id
+        in: path
+        name: gp_id
+        required: true
+        type: string
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: qual result info
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.QualResult'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Update qual_result
+      tags:
+      - qual_results
+  /api/grandprix/{gp_id}/race_results:
+    post:
+      consumes:
+      - application/json
+      description: Create race_results
+      operationId: create-race_results
+      parameters:
+      - description: gp_id
+        in: path
+        name: gp_id
+        required: true
+        type: string
+      - description: race result info
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.RaceResult'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Create race_results
+      tags:
+      - race_resultss
+  /api/grandprix/{gp_id}/race_results/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete race_results
+      operationId: delete-race_results
+      parameters:
+      - description: gp_id
+        in: path
+        name: gp_id
+        required: true
+        type: string
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Internal Server Error
+      summary: Delete race_results
+      tags:
+      - race_results
+    put:
+      consumes:
+      - application/json
+      description: Update race_results
+      operationId: update-race_results
+      parameters:
+      - description: gp_id
+        in: path
+        name: gp_id
+        required: true
+        type: string
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: race result info
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.RaceResult'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Update race_results
+      tags:
+      - race_results
+  /api/grandprix/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete gp
+      operationId: delete-gp
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Delete gp
+      tags:
+      - gp
+    get:
+      consumes:
+      - application/json
+      description: Get gp by id
+      operationId: get-gp-by-id
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GrandPrix'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Get gp by id
+      tags:
+      - gp
+    put:
+      consumes:
+      - application/json
+      description: Update gp
+      operationId: update-gp
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: GP info
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.GrandPrix'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Update gp
+      tags:
+      - gp
+  /api/grandprix/{id}/qual_results:
+    get:
+      consumes:
+      - application/json
+      description: Get qualresults of gp
+      operationId: get-qual-of-gp
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.QualResultView'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Get qualresults of gp
+      tags:
+      - gp
+  /api/grandprix/{id}/race_results:
+    get:
+      consumes:
+      - application/json
+      description: Get raceresults of gp
+      operationId: get-race-of-gp
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.RaceResultView'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Get raceresults of gp
+      tags:
+      - gp
+  /api/grandprix/{id}/race_winner:
+    get:
+      consumes:
+      - application/json
+      description: Get race winner of gp
+      operationId: get-race-winner-of-gp
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.RaceResultView'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Get race winner of gp
+      tags:
+      - gp
+  /api/grandprix/season/{season}:
+    get:
+      consumes:
+      - application/json
+      description: Get gp by season
+      operationId: get-gp-by-season
+      parameters:
+      - description: season
+        in: path
+        name: season
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GrandPrix'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Get gp by season
+      tags:
+      - gp
+  /api/team/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get team by id
+      operationId: get-team-by-id
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Team'
+        "500":
+          description: Internal Server Error
+      summary: Get team by id
+      tags:
+      - teams
+  /api/teams:
+    get:
+      consumes:
+      - application/json
+      description: Get all teams
+      operationId: get-all-teams
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Team'
+        "500":
+          description: Internal Server Error
+      summary: Get all teams
+      tags:
+      - teams
+    post:
+      consumes:
+      - application/json
+      description: Create team
+      operationId: create-team
+      parameters:
+      - description: team info
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.Team'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Create team
+      tags:
+      - teams
+  /api/teams/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete team
+      operationId: delete-team
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Internal Server Error
+      summary: Delete team
+      tags:
+      - teams
+    put:
+      consumes:
+      - application/json
+      description: update teams
+      operationId: update-teams
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: team info
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.Team'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Update team
+      tags:
+      - teams
+  /api/teams/{season}:
+    get:
+      consumes:
+      - application/json
+      description: Get teams by season
+      operationId: get-teams-by-season
+      parameters:
+      - description: season
+        in: path
+        name: season
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Team'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Get teams by season
+      tags:
+      - teams
+  /api/tracks:
+    get:
+      consumes:
+      - application/json
+      description: Get all tracks
+      operationId: get-all-tracks
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Track'
+        "500":
+          description: Internal Server Error
+      summary: Get all tracks
+      tags:
+      - tracks
+    post:
+      consumes:
+      - application/json
+      description: create track
+      operationId: create-track
+      parameters:
+      - description: track info
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.Track'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Create track
+      tags:
+      - tracks
+  /api/tracks/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete track
+      operationId: delete-track
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Internal Server Error
+      summary: Delete track
+      tags:
+      - tracks
+    get:
+      consumes:
+      - application/json
+      description: Get track by id
+      operationId: get-track-by-id
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Track'
+        "500":
+          description: Internal Server Error
+      summary: Get track by id
+      tags:
+      - tracks
+    put:
+      consumes:
+      - application/json
+      description: update track
+      operationId: update-track
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: track info
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.Track'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Update track
+      tags:
+      - tracks
+  /api/users:
+    post:
+      consumes:
+      - application/json
+      description: create user
+      operationId: create-user
+      parameters:
+      - description: user info
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Create user
+      tags:
+      - users
+  /api/users/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete user
+      operationId: delete-user
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Internal Server Error
+      summary: Delete user
+      tags:
+      - users
+    put:
+      consumes:
+      - application/json
+      description: update user
+      operationId: update-user
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: user info
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Update user
+      tags:
+      - users
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: User log in
+      operationId: auth-log-in
+      parameters:
+      - description: account info
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/auth.LogInData'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Logged in successfully!
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+      summary: Log in
+      tags:
+      - auth
+  /auth/logout:
+    delete:
+      consumes:
+      - application/json
+      description: User log out
+      operationId: auth-log-out
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Logged out successfully!
+          schema:
+            type: string
+      summary: Log out
+      tags:
+      - auth
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: New user register
+      operationId: auth-register
+      parameters:
+      - description: account info
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Internal Server Error
+      summary: Register
+      tags:
+      - auth
+swagger: "2.0"

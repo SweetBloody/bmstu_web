@@ -30,6 +30,9 @@ import (
 	trackUsecase "github.com/SweetBloody/bmstu_web/backend/internal/pkg/track/usecase"
 	userUsecase "github.com/SweetBloody/bmstu_web/backend/internal/pkg/user/usecase"
 
+	_ "github.com/SweetBloody/bmstu_web/backend/docs"
+	httpSwagger "github.com/swaggo/http-swagger/v2"
+
 	"github.com/SweetBloody/bmstu_web/backend/internal/app/middleware"
 
 	"github.com/gorilla/mux"
@@ -37,6 +40,13 @@ import (
 	_ "github.com/lib/pq"
 )
 
+// @title FormulOne Web-Server
+// @version 1.0
+// @description API Server for F1 Grand-Prix info
+// @termsOfService  http://swagger.io/terms/
+
+// @host localhost:5259
+// @BasePath /
 func main() {
 	params := "user=postgresql dbname=formula1 password=postgresql host=localhost port=1000 sslmode=disable"
 	db, err := sqlx.Connect("postgres", params)
@@ -72,6 +82,12 @@ func main() {
 	authHandler.NewAuthHandler(m, userUcase)
 	userHandler.NewUserHandler(m, userUcase)
 
+	m.PathPrefix("/swagger/").Handler(httpSwagger.Handler(
+		httpSwagger.URL("http://localhost:5259/swagger/doc.json"), //The url pointing to API definition
+		httpSwagger.DeepLinking(true),
+		httpSwagger.DocExpansion("none"),
+		httpSwagger.DomID("swagger-ui"),
+	)).Methods(http.MethodGet)
 	mMiddleware := middleware.LogMiddleware(m)
 
 	fmt.Println("starting server at :5259")
