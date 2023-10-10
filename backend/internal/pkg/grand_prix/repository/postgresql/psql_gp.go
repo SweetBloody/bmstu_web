@@ -115,17 +115,32 @@ func (pgRepo *psqlGPRepository) Update(newGrandPrix *models.GrandPrix) error {
 	_, err := pgRepo.db.Exec(
 		"update grandprix "+
 			"set gp_season = $1, "+
-			"gp_date_num = $2, "+
-			"gp_month = $3,"+
-			"gp_place = $4,"+
-			"gp_track_id = $5 "+
-			"where driver_id = $6",
+			"gp_name = $2, "+
+			"gp_date_num = $3, "+
+			"gp_month = $4,"+
+			"gp_place = $5,"+
+			"gp_track_id = $6 "+
+			"where gp_id = $7",
+		newGrandPrix.Season,
 		newGrandPrix.Name,
 		newGrandPrix.DateNum,
 		newGrandPrix.Month,
 		newGrandPrix.Place,
 		newGrandPrix.TrackId,
 		newGrandPrix.ID)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (pgRepo *psqlGPRepository) UpdateGPName(id int, newName string) error {
+	_, err := pgRepo.db.Exec(
+		"update grandprix "+
+			"set gp_name = $1 "+
+			"where gp_id = $2",
+		newName,
+		id)
 	if err != nil {
 		return err
 	}

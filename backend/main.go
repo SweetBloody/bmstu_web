@@ -35,6 +35,7 @@ import (
 
 	"github.com/SweetBloody/bmstu_web/backend/internal/app/middleware"
 
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
@@ -91,5 +92,5 @@ func main() {
 	mMiddleware := middleware.LogMiddleware(m)
 
 	fmt.Println("starting server at :5259")
-	http.ListenAndServe(":5259", mMiddleware)
+	http.ListenAndServe(":5259", handlers.CORS()(mMiddleware))
 }

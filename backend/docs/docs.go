@@ -30,6 +30,14 @@ const docTemplate = `{
                 ],
                 "summary": "Get all drivers",
                 "operationId": "get-all-drivers",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "season",
+                        "name": "season",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -195,45 +203,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/drivers/{season}": {
-            "get": {
-                "description": "Get driver by season",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "drivers"
-                ],
-                "summary": "Get driver by season",
-                "operationId": "get-driver-by-season",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "season",
-                        "name": "season",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.Driver"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request"
-                    },
-                    "500": {
-                        "description": "Internal Server Error"
-                    }
-                }
-            }
-        },
         "/api/drivers_standing": {
             "get": {
                 "description": "Get drivers standings",
@@ -313,6 +282,14 @@ const docTemplate = `{
                 ],
                 "summary": "Get all gp",
                 "operationId": "get-all-gp",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "season",
+                        "name": "season",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -352,45 +329,6 @@ const docTemplate = `{
                 "responses": {
                     "200": {
                         "description": "OK"
-                    },
-                    "400": {
-                        "description": "Bad Request"
-                    },
-                    "500": {
-                        "description": "Internal Server Error"
-                    }
-                }
-            }
-        },
-        "/api/grandprix/season/{season}": {
-            "get": {
-                "description": "Get gp by season",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "gp"
-                ],
-                "summary": "Get gp by season",
-                "operationId": "get-gp-by-season",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "season",
-                        "name": "season",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.GrandPrix"
-                        }
                     },
                     "400": {
                         "description": "Bad Request"
@@ -790,6 +728,51 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/grandprix/{id}/name": {
+            "patch": {
+                "description": "Update gp name",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "gp"
+                ],
+                "summary": "Update gp name",
+                "operationId": "update-gp-name",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "gp_name",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/api/grandprix/{id}/qual_results": {
             "get": {
                 "description": "Get qualresults of gp",
@@ -957,6 +940,14 @@ const docTemplate = `{
                 ],
                 "summary": "Get all teams",
                 "operationId": "get-all-teams",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "season",
+                        "name": "season",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -1075,45 +1066,6 @@ const docTemplate = `{
                 "responses": {
                     "200": {
                         "description": "OK"
-                    },
-                    "500": {
-                        "description": "Internal Server Error"
-                    }
-                }
-            }
-        },
-        "/api/teams/{season}": {
-            "get": {
-                "description": "Get teams by season",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "teams"
-                ],
-                "summary": "Get teams by season",
-                "operationId": "get-teams-by-season",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "season",
-                        "name": "season",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.Team"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request"
                     },
                     "500": {
                         "description": "Internal Server Error"

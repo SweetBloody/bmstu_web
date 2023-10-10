@@ -168,6 +168,11 @@ paths:
       - application/json
       description: Get all drivers
       operationId: get-all-drivers
+      parameters:
+      - description: season
+        in: query
+        name: season
+        type: string
       produces:
       - application/json
       responses:
@@ -282,32 +287,6 @@ paths:
       summary: Update driver
       tags:
       - drivers
-  /api/drivers/{season}:
-    get:
-      consumes:
-      - application/json
-      description: Get driver by season
-      operationId: get-driver-by-season
-      parameters:
-      - description: season
-        in: path
-        name: season
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.Driver'
-        "400":
-          description: Bad Request
-        "500":
-          description: Internal Server Error
-      summary: Get driver by season
-      tags:
-      - drivers
   /api/drivers_standing:
     get:
       consumes:
@@ -357,6 +336,11 @@ paths:
       - application/json
       description: Get all gp
       operationId: get-all-gp
+      parameters:
+      - description: season
+        in: query
+        name: season
+        type: string
       produces:
       - application/json
       responses:
@@ -655,6 +639,36 @@ paths:
       summary: Update gp
       tags:
       - gp
+  /api/grandprix/{id}/name:
+    patch:
+      consumes:
+      - application/json
+      description: Update gp name
+      operationId: update-gp-name
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: gp_name
+        in: body
+        name: input
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Update gp name
+      tags:
+      - gp
   /api/grandprix/{id}/qual_results:
     get:
       consumes:
@@ -733,32 +747,6 @@ paths:
       summary: Get race winner of gp
       tags:
       - gp
-  /api/grandprix/season/{season}:
-    get:
-      consumes:
-      - application/json
-      description: Get gp by season
-      operationId: get-gp-by-season
-      parameters:
-      - description: season
-        in: path
-        name: season
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.GrandPrix'
-        "400":
-          description: Bad Request
-        "500":
-          description: Internal Server Error
-      summary: Get gp by season
-      tags:
-      - gp
   /api/team/{id}:
     get:
       consumes:
@@ -789,6 +777,11 @@ paths:
       - application/json
       description: Get all teams
       operationId: get-all-teams
+      parameters:
+      - description: season
+        in: query
+        name: season
+        type: string
       produces:
       - application/json
       responses:
@@ -874,32 +867,6 @@ paths:
         "500":
           description: Internal Server Error
       summary: Update team
-      tags:
-      - teams
-  /api/teams/{season}:
-    get:
-      consumes:
-      - application/json
-      description: Get teams by season
-      operationId: get-teams-by-season
-      parameters:
-      - description: season
-        in: path
-        name: season
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.Team'
-        "400":
-          description: Bad Request
-        "500":
-          description: Internal Server Error
-      summary: Get teams by season
       tags:
       - teams
   /api/tracks:

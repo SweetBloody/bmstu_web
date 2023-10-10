@@ -21,11 +21,11 @@ func NewDriverHandler(m *mux.Router, driverUsecase models.DriverUsecaseI) {
 		driverUsecase: driverUsecase,
 	}
 
+	m.HandleFunc("/api/drivers", handler.GetDriversOfSeason).Queries("season", "{season}").Methods("GET")
 	m.Handle("/api/drivers", middleware.AuthMiddleware(http.HandlerFunc(handler.GetAll), "admin", "user")).Methods("GET")
 	m.Handle("/api/drivers", middleware.AuthMiddleware(http.HandlerFunc(handler.Create), "admin")).Methods("POST")
 	m.Handle("/api/drivers/{id}", middleware.AuthMiddleware(http.HandlerFunc(handler.GetDriverById), "admin", "user")).Methods("GET")
-	m.HandleFunc("/api/drivers_of_season", handler.GetDriversOfSeason).Methods("GET")
-	m.Handle("/api/drivers_of_season/{season}", middleware.AuthMiddleware(http.HandlerFunc(handler.GetDriversOfSeason), "admin", "user")).Methods("GET")
+	//m.Handle("/api/drivers", middleware.AuthMiddleware(http.HandlerFunc(handler.GetDriversOfSeason), "admin", "user")).Queries("season", "{season}").Methods("GET")
 	m.Handle("/api/drivers_standing", middleware.AuthMiddleware(http.HandlerFunc(handler.GetDriversStanding), "admin", "user")).Methods("GET")
 	m.Handle("/api/drivers/{id}", middleware.AuthMiddleware(http.HandlerFunc(handler.Update), "admin")).Methods("PUT")
 	m.Handle("/api/drivers/{id}", middleware.AuthMiddleware(http.HandlerFunc(handler.Delete), "admin")).Methods("DELETE")
@@ -86,25 +86,25 @@ func (handler *driverHandler) GetDriverById(w http.ResponseWriter, r *http.Reque
 	}
 }
 
-// @Summary Get driver by season
+// @Summary Get all drivers
 // @Tags drivers
-// @Description Get driver by season
-// @ID get-driver-by-season
+// @Description Get all drivers
+// @ID get-all-drivers
 // @Accept  json
 // @Produce  json
-// @Param season path string true "season"
+// @Param season query string false "season"
 // @Success 200 {object} models.Driver
-// @Failure 400
 // @Failure 500
-// @Router /api/drivers/{season} [get]
+// @Router /api/drivers [get]
 func (handler *driverHandler) GetDriversOfSeason(w http.ResponseWriter, r *http.Request) {
 	var season int
 	var err error
-	vars := mux.Vars(r)
-	if x, ok := vars["season"]; !ok {
+	_, err = r.Cookie("jwt-token")
+	if err != nil {
 		season = time.Now().Year() - 1
 	} else {
-		season, err = strconv.Atoi(x)
+		res := r.URL.Query().Get("season")
+		season, err = strconv.Atoi(res)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return

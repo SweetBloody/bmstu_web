@@ -18,6 +18,7 @@ type GrandPrixUsecaseI interface {
 	Create(grandPrix *GrandPrix) (int, error)
 	Update(id int, newGrandPrix *GrandPrix) error
 	Delete(id int) error
+	UpdateGPName(id int, gpName string) error
 }
 
 type GrandPrixRepositoryI interface {
@@ -28,4 +29,5 @@ type GrandPrixRepositoryI interface {
 	Create(grandPrix *GrandPrix) (int, error)
 	Update(newGrandPrix *GrandPrix) error
 	Delete(id int) error
+	UpdateGPName(id int, newName string) error
 }

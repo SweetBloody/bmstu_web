@@ -4,12 +4,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/SweetBloody/bmstu_web/backend/internal/app/middleware"
+	"github.com/SweetBloody/bmstu_web/backend/internal/pkg/models"
 	"github.com/gorilla/mux"
 	"net/http"
 	"strconv"
-	"time"
-
-	"github.com/SweetBloody/bmstu_web/backend/internal/pkg/models"
 )
 
 type teamHandler struct {
@@ -21,10 +19,10 @@ func NewTeamHandler(m *mux.Router, teamUsecase models.TeamUsecaseI) {
 		teamUsecase: teamUsecase,
 	}
 
+	m.Handle("/api/teams", middleware.AuthMiddleware(http.HandlerFunc(handler.GetTeamsOfSeason), "admin", "user")).Queries("season", "{season}").Methods("GET")
 	m.Handle("/api/teams", middleware.AuthMiddleware(http.HandlerFunc(handler.GetAll), "admin", "user")).Methods("GET")
 	m.Handle("/api/teams/{id}", middleware.AuthMiddleware(http.HandlerFunc(handler.GetTeamById), "admin", "user")).Methods("GET")
-	m.Handle("/api/teams_of_season", middleware.AuthMiddleware(http.HandlerFunc(handler.GetTeamsOfSeason), "admin", "user")).Methods("GET")
-	m.Handle("/api/teams_of_season/{season}", middleware.AuthMiddleware(http.HandlerFunc(handler.GetTeamsOfSeason), "admin", "user")).Methods("GET")
+	//m.Handle("/api/teams_of_season/{season}", middleware.AuthMiddleware(http.HandlerFunc(handler.GetTeamsOfSeason), "admin", "user")).Methods("GET")
 	m.Handle("/api/teams", middleware.AuthMiddleware(http.HandlerFunc(handler.Create), "admin")).Methods("POST")
 	m.Handle("/api/teams/{id}", middleware.AuthMiddleware(http.HandlerFunc(handler.Update), "admin")).Methods("PUT")
 	m.Handle("/api/teams/{id}", middleware.AuthMiddleware(http.HandlerFunc(handler.Delete), "admin")).Methods("DELETE")
@@ -83,29 +81,24 @@ func (handler *teamHandler) GetTeamById(w http.ResponseWriter, r *http.Request) 
 	}
 }
 
-// @Summary Get teams by season
+// @Summary Get all teams
 // @Tags teams
-// @Description Get teams by season
-// @ID get-teams-by-season
+// @Description Get all teams
+// @ID get-all-teams
 // @Accept  json
 // @Produce  json
-// @Param season path string true "season"
+// @Param season query string false "season"
 // @Success 200 {object} models.Team
-// @Failure 400
 // @Failure 500
-// @Router /api/teams/{season} [get]
+// @Router /api/teams [get]
 func (handler *teamHandler) GetTeamsOfSeason(w http.ResponseWriter, r *http.Request) {
 	var season int
 	var err error
-	vars := mux.Vars(r)
-	if x, ok := vars["season"]; !ok {
-		season = time.Now().Year() - 1
-	} else {
-		season, err = strconv.Atoi(x)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
-			return
-		}
+	res := r.URL.Query().Get("season")
+	season, err = strconv.Atoi(res)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
 	encoder := json.NewEncoder(w)
 	teams, err := handler.teamUsecase.GetTeamsOfSeason(season)

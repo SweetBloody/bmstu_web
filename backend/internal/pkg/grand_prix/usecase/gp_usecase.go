@@ -71,6 +71,14 @@ func (uc *grandPrixUsecase) Delete(id int) error {
 	return nil
 }
 
+func (uc *grandPrixUsecase) UpdateGPName(id int, gpName string) error {
+	err := uc.grandPrixRepo.UpdateGPName(id, gpName)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 //func (uc *grandPrixUsecase) GetRaceResultsOfGP(gp_id int) ([]*models.RaceResult, error) {
 //	race_results, err := uc.grandPrixRepo.GetRaceResultsOfGP(gp_id)
 //	if err != nil {
