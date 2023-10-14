@@ -18,7 +18,7 @@ const docTemplate = `{
     "paths": {
         "/api/drivers": {
             "get": {
-                "description": "Get all drivers",
+                "description": "Get race winner of gp",
                 "consumes": [
                     "application/json"
                 ],
@@ -28,13 +28,20 @@ const docTemplate = `{
                 "tags": [
                     "drivers"
                 ],
-                "summary": "Get all drivers",
-                "operationId": "get-all-drivers",
+                "summary": "Get race winner of gp",
+                "operationId": "get-race-winner-of-gp",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "season",
-                        "name": "season",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "winner_gp_id",
+                        "name": "winner_gp_id",
                         "in": "query"
                     }
                 ],
@@ -42,8 +49,11 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Driver"
+                            "$ref": "#/definitions/models.RaceResultView"
                         }
+                    },
+                    "400": {
+                        "description": "Bad Request"
                     },
                     "500": {
                         "description": "Internal Server Error"
@@ -487,7 +497,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "race_resultss"
+                    "race_results"
                 ],
                 "summary": "Create race_results",
                 "operationId": "create-race_results",
@@ -783,7 +793,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "gp"
+                    "qual_results"
                 ],
                 "summary": "Get qualresults of gp",
                 "operationId": "get-qual-of-gp",
@@ -822,49 +832,10 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "gp"
+                    "race_results"
                 ],
                 "summary": "Get raceresults of gp",
                 "operationId": "get-race-of-gp",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "id",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.RaceResultView"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request"
-                    },
-                    "500": {
-                        "description": "Internal Server Error"
-                    }
-                }
-            }
-        },
-        "/api/grandprix/{id}/race_winner": {
-            "get": {
-                "description": "Get race winner of gp",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "gp"
-                ],
-                "summary": "Get race winner of gp",
-                "operationId": "get-race-winner-of-gp",
                 "parameters": [
                     {
                         "type": "string",

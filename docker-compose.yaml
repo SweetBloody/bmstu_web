@@ -1,0 +1,73 @@
+version: '3.7'
+
+services:
+  postgres:
+    container_name: postgres_container
+    image: postgres
+    environment:
+      POSTGRES_USER: postgresql
+      POSTGRES_PASSWORD: postgresql
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - postgres:/var/lib/postgresql/data
+      - ./database:/db_data
+    ports:
+      - "5432:5432"
+    networks:
+      - postgres_network
+
+  app:
+    container_name: app_container
+    restart: always
+    depends_on:
+      - postgres
+    build:
+      dockerfile: backend/Dockerfile
+    volumes:
+      - ./backend:/app
+    networks:
+      - postgres_network
+    ports:
+      - "5259:5259"
+
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4:latest
+    depends_on:
+      - postgres
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    networks:
+      - postgres_network
+
+  nginx:
+    image: nginx:1.23.3
+    container_name: nginx_container
+    depends_on:
+      - pgadmin
+      - app
+    volumes:
+      - ./nginx/my_nginx.conf:/etc/nginx/conf.d/my_nginx.conf
+      - ./README.md:/documentation/README.md
+      - ./img:/documentation/img
+      - ./static:/static
+#      - ./backend:/backend
+    ports:
+      - "8081:80"
+      #      - "443:443"
+#    network_mode: host
+    networks:
+      - postgres_network
+
+volumes:
+  postgres:
+  pgadmin-data:
+
+networks:
+  postgres_network:
+    driver: bridge

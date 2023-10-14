@@ -49,7 +49,7 @@ import (
 // @host localhost:5259
 // @BasePath /
 func main() {
-	params := "user=postgresql dbname=formula1 password=postgresql host=localhost port=1000 sslmode=disable"
+	params := "user=postgresql dbname=formula1 password=postgresql host=postgres port=5432 sslmode=disable"
 	db, err := sqlx.Connect("postgres", params)
 	if err != nil {
 		log.Fatal(err)
@@ -74,7 +74,7 @@ func main() {
 
 	m := mux.NewRouter()
 
-	driverHandler.NewDriverHandler(m, driverUcase)
+	driverHandler.NewDriverHandler(m, driverUcase, raceUcase)
 	teamHandler.NewTeamHandler(m, teamUcase)
 	trackHandler.NewTrackHandler(m, trackUcase)
 	grandPrixHandler.NewDriverHandler(m, gpUcase, raceUcase, qualUcase)
@@ -83,12 +83,7 @@ func main() {
 	authHandler.NewAuthHandler(m, userUcase)
 	userHandler.NewUserHandler(m, userUcase)
 
-	m.PathPrefix("/swagger/").Handler(httpSwagger.Handler(
-		httpSwagger.URL("http://localhost:5259/swagger/doc.json"), //The url pointing to API definition
-		httpSwagger.DeepLinking(true),
-		httpSwagger.DocExpansion("none"),
-		httpSwagger.DomID("swagger-ui"),
-	)).Methods(http.MethodGet)
+	m.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler).Methods(http.MethodGet)
 	mMiddleware := middleware.LogMiddleware(m)
 
 	fmt.Println("starting server at :5259")

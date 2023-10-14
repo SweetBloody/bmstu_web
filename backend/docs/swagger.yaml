@@ -166,12 +166,17 @@ paths:
     get:
       consumes:
       - application/json
-      description: Get all drivers
-      operationId: get-all-drivers
+      description: Get race winner of gp
+      operationId: get-race-winner-of-gp
       parameters:
-      - description: season
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: winner_gp_id
         in: query
-        name: season
+        name: winner_gp_id
         type: string
       produces:
       - application/json
@@ -179,10 +184,12 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Driver'
+            $ref: '#/definitions/models.RaceResultView'
+        "400":
+          description: Bad Request
         "500":
           description: Internal Server Error
-      summary: Get all drivers
+      summary: Get race winner of gp
       tags:
       - drivers
     post:
@@ -499,7 +506,7 @@ paths:
           description: Internal Server Error
       summary: Create race_results
       tags:
-      - race_resultss
+      - race_results
   /api/grandprix/{gp_id}/race_results/{id}:
     delete:
       consumes:
@@ -694,7 +701,7 @@ paths:
           description: Internal Server Error
       summary: Get qualresults of gp
       tags:
-      - gp
+      - qual_results
   /api/grandprix/{id}/race_results:
     get:
       consumes:
@@ -720,33 +727,7 @@ paths:
           description: Internal Server Error
       summary: Get raceresults of gp
       tags:
-      - gp
-  /api/grandprix/{id}/race_winner:
-    get:
-      consumes:
-      - application/json
-      description: Get race winner of gp
-      operationId: get-race-winner-of-gp
-      parameters:
-      - description: id
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.RaceResultView'
-        "400":
-          description: Bad Request
-        "500":
-          description: Internal Server Error
-      summary: Get race winner of gp
-      tags:
-      - gp
+      - race_results
   /api/team/{id}:
     get:
       consumes:

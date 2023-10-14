@@ -37,7 +37,6 @@ func NewDriverHandler(m *mux.Router,
 	m.Handle("/api/grandprix/{id}/name", middleware.AuthMiddleware(http.HandlerFunc(handler.UpdateGPName), "admin")).Methods("PATCH")
 	m.Handle("/api/grandprix/{id}/race_results", middleware.AuthMiddleware(http.HandlerFunc(handler.GetRaceResultsOfGP), "admin", "user")).Methods("GET")
 	m.Handle("/api/grandprix/{id}/qual_results", middleware.AuthMiddleware(http.HandlerFunc(handler.GetQualResultsOfGP), "admin", "user")).Methods("GET")
-	m.HandleFunc("/api/grandprix/{id}/race_winner", handler.GetRaceWinnerOfGP).Methods("GET")
 }
 
 // @Summary Get all gp
@@ -268,7 +267,7 @@ func (handler *grandPrixHandler) UpdateGPName(w http.ResponseWriter, r *http.Req
 }
 
 // @Summary Get raceresults of gp
-// @Tags gp
+// @Tags race_results
 // @Description Get raceresults of gp
 // @ID get-race-of-gp
 // @Accept  json
@@ -298,7 +297,7 @@ func (handler *grandPrixHandler) GetRaceResultsOfGP(w http.ResponseWriter, r *ht
 }
 
 // @Summary Get qualresults of gp
-// @Tags gp
+// @Tags qual_results
 // @Description Get qualresults of gp
 // @ID get-qual-of-gp
 // @Accept  json
@@ -316,36 +315,6 @@ func (handler *grandPrixHandler) GetQualResultsOfGP(w http.ResponseWriter, r *ht
 		return
 	}
 	qualResults, err := handler.qualResultUsecase.GetQualResultsOfGP(id)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
-	encoder := json.NewEncoder(w)
-	err = encoder.Encode(qualResults)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-}
-
-// @Summary Get race winner of gp
-// @Tags gp
-// @Description Get race winner of gp
-// @ID get-race-winner-of-gp
-// @Accept  json
-// @Produce  json
-// @Param id path string true "id"
-// @Success 200 {object} models.RaceResultView
-// @Failure 400
-// @Failure 500
-// @Router /api/grandprix/{id}/race_winner [get]
-func (handler *grandPrixHandler) GetRaceWinnerOfGP(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	id, err := strconv.Atoi(vars["id"])
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-	qualResults, err := handler.raceResultUsecase.GetRaceWinnerOfGP(id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}

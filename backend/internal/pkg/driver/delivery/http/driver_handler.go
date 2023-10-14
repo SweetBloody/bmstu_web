@@ -13,12 +13,14 @@ import (
 )
 
 type driverHandler struct {
-	driverUsecase models.DriverUsecaseI
+	driverUsecase     models.DriverUsecaseI
+	raceResultUsecase models.RaceResultUsecaseI
 }
 
-func NewDriverHandler(m *mux.Router, driverUsecase models.DriverUsecaseI) {
+func NewDriverHandler(m *mux.Router, driverUsecase models.DriverUsecaseI, raceResultUsecase models.RaceResultUsecaseI) {
 	handler := &driverHandler{
-		driverUsecase: driverUsecase,
+		driverUsecase:     driverUsecase,
+		raceResultUsecase: raceResultUsecase,
 	}
 
 	m.HandleFunc("/api/drivers", handler.GetDriversOfSeason).Queries("season", "{season}").Methods("GET")
@@ -30,6 +32,7 @@ func NewDriverHandler(m *mux.Router, driverUsecase models.DriverUsecaseI) {
 	m.Handle("/api/drivers/{id}", middleware.AuthMiddleware(http.HandlerFunc(handler.Update), "admin")).Methods("PUT")
 	m.Handle("/api/drivers/{id}", middleware.AuthMiddleware(http.HandlerFunc(handler.Delete), "admin")).Methods("DELETE")
 	m.Handle("/api/drivers_teams", middleware.AuthMiddleware(http.HandlerFunc(handler.LinkDriverTeam), "admin")).Methods("POST")
+	m.HandleFunc("/api/drivers", handler.GetRaceWinnerOfGP).Queries("winner_gp_id", "{winner_gp_id}").Methods("GET")
 }
 
 // @Summary Get all drivers
@@ -257,6 +260,37 @@ func (handler *driverHandler) LinkDriverTeam(w http.ResponseWriter, r *http.Requ
 		return
 	}
 	err = handler.driverUsecase.LinkDriverTeam(link)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+}
+
+// @Summary Get race winner of gp
+// @Tags drivers
+// @Description Get race winner of gp
+// @ID get-race-winner-of-gp
+// @Accept  json
+// @Produce  json
+// @Param id path string true "id"
+// @Param winner_gp_id query string false "winner_gp_id"
+// @Success 200 {object} models.RaceResultView
+// @Failure 400
+// @Failure 500
+// @Router /api/drivers [get]
+func (handler *driverHandler) GetRaceWinnerOfGP(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	qualResults, err := handler.raceResultUsecase.GetRaceWinnerOfGP(id)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+	encoder := json.NewEncoder(w)
+	err = encoder.Encode(qualResults)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

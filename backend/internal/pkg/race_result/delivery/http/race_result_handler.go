@@ -63,7 +63,7 @@ func (handler *raceResultHandler) GetRaceResultById(w http.ResponseWriter, r *ht
 }
 
 // @Summary Create race_results
-// @Tags race_resultss
+// @Tags race_results
 // @Description Create race_results
 // @ID create-race_results
 // @Accept  json
