@@ -16,8 +16,8 @@ services:
     networks:
       - postgres_network
 
-  app:
-    container_name: app_container
+  webapp:
+    container_name: webapp
     restart: always
     depends_on:
       - postgres
@@ -27,8 +27,9 @@ services:
       - ./backend:/app
     networks:
       - postgres_network
+      - nginx_network
     ports:
-      - "5259:5259"
+      - "8080:8080"
 
   pgadmin:
     container_name: pgadmin_container
@@ -50,7 +51,7 @@ services:
     container_name: nginx_container
     depends_on:
       - pgadmin
-      - app
+      - webapp
     volumes:
       - ./nginx/my_nginx.conf:/etc/nginx/conf.d/my_nginx.conf
       - ./README.md:/documentation/README.md
@@ -59,10 +60,10 @@ services:
 #      - ./backend:/backend
     ports:
       - "8081:80"
-      #      - "443:443"
+#      - "443:443"
 #    network_mode: host
     networks:
-      - postgres_network
+      - nginx_network
 
 volumes:
   postgres:
@@ -70,4 +71,6 @@ volumes:
 
 networks:
   postgres_network:
+    driver: bridge
+  nginx_network:
     driver: bridge

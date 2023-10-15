@@ -86,6 +86,6 @@ func main() {
 	m.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler).Methods(http.MethodGet)
 	mMiddleware := middleware.LogMiddleware(m)
 
-	fmt.Println("starting server at :5259")
-	http.ListenAndServe(":5259", handlers.CORS()(mMiddleware))
+	fmt.Println("starting server at :8080")
+	http.ListenAndServe(":8080", handlers.CORS()(mMiddleware))
 }
