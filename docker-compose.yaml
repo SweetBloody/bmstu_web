@@ -25,7 +25,7 @@ services:
       POSTGRES_PASSWORD: postgresql
       PGDATA: /var/lib/postgresql/data
     volumes:
-      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+#      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
       - ./pg_data/postgres_replica:/var/lib/postgresql/data
       - ./database:/db_data
     networks:
@@ -116,6 +116,8 @@ services:
       - ./nginx/nginx_full.conf:/etc/nginx/nginx.conf
       - ./README.md:/static/documentation/README.md
       - ./img/:/static/documentation/img/
+      - ./benchmark/img/:/static/benchmark/img/
+      - ./benchmark/bench.md:/static/benchmark/bench.md
       - ./static:/static
     ports:
       - "8081:8080"
