@@ -17,9 +17,9 @@ func NewAuthHandler(m *mux.Router, userUsecase models.UserUsecaseI) {
 	handler := &authHandler{
 		userUsecase: userUsecase,
 	}
-	m.HandleFunc("/auth/login", handler.LogIn).Methods("POST")
-	m.HandleFunc("/auth/register", handler.Register).Methods("POST")
-	m.HandleFunc("/auth/logout", handler.LogOut).Methods("DELETE")
+	m.HandleFunc("/api/login", handler.LogIn).Methods("POST")
+	m.HandleFunc("/api/register", handler.Register).Methods("POST")
+	m.HandleFunc("/api/logout", handler.LogOut).Methods("DELETE")
 }
 
 // @Summary Log in

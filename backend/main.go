@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	authHandler "github.com/SweetBloody/bmstu_web/backend/internal/pkg/auth/delivery/http"
 	driverHandler "github.com/SweetBloody/bmstu_web/backend/internal/pkg/driver/delivery/http"
@@ -49,7 +50,7 @@ import (
 // @host localhost:5259
 // @BasePath /
 func main() {
-	params := "user=postgresql dbname=formula1 password=postgresql host=postgres port=5432 sslmode=disable"
+	params := fmt.Sprintf("user=default_admin dbname=back password=12345678 host=%s port=%s sslmode=disable", os.Getenv("PG_HOST"), os.Getenv("PG_PORT"))
 	db, err := sqlx.Connect("postgres", params)
 	if err != nil {
 		log.Fatal(err)
