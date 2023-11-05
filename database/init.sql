@@ -167,6 +167,9 @@ copy public.teamsdrivers(driver_id,
     team_driver_season)
     from '/db_data/data/teams_drivers.csv' delimiter ';' CSV;
 
+insert into users(login, password, role)
+values ('admin', 'admin', 'admin');
+
 
 create user "default_guest";
 create user "default_user";

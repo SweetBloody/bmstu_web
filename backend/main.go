@@ -50,7 +50,7 @@ import (
 // @host localhost:5259
 // @BasePath /
 func main() {
-	params := fmt.Sprintf("user=postgresql dbname=postgresql password=postgresql host=%s port=5432 sslmode=disable", os.Getenv("PG_HOST"))
+	params := fmt.Sprintf("user=default_admin dbname=back password=12345678 host=%s port=%s sslmode=disable", os.Getenv("PG_HOST"), os.Getenv("PG_PORT"))
 	db, err := sqlx.Connect("postgres", params)
 	if err != nil {
 		log.Fatal(err)
