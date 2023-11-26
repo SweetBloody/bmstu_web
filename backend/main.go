@@ -1,6 +1,7 @@
 package main
 
 import (
+	"example/graph"
 	"fmt"
 	"log"
 	"net/http"
@@ -36,6 +37,8 @@ import (
 
 	"github.com/SweetBloody/bmstu_web/backend/internal/app/middleware"
 
+	"github.com/99designs/gqlgen/graphql/playground"
+	"github.com/SweetBloody/bmstu_web/backend/internal/pkg/graphql/graph"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/jmoiron/sqlx"
@@ -84,7 +87,15 @@ func main() {
 	authHandler.NewAuthHandler(m, userUcase)
 	userHandler.NewUserHandler(m, userUcase)
 
+	srv := graph.NewServer(graph.Options{})
+	//srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{}}))
+
+	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
+	http.Handle("/query", srv)
+
 	m.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler).Methods(http.MethodGet)
+	m.Handle("/api/graphql/", playground.Handler("GraphQL playground", "/query"))
+	m.Handle("/api/v2")
 	mMiddleware := middleware.LogMiddleware(m)
 
 	fmt.Println("starting server at :8080")

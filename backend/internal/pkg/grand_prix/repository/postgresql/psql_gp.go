@@ -22,7 +22,7 @@ func (pgRepo *psqlGPRepository) GetAll() ([]*models.GrandPrix, error) {
 		"select gp_id, gp_season, gp_name, gp_date_num, gp_month, gp_place, gp_track_id " +
 			"from grandprix")
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error from db, error: %w", err)
 	}
 	for rows.Next() {
 		gp_temp := &models.GrandPrix{}
@@ -43,7 +43,7 @@ func (pgRepo *psqlGPRepository) GetAllBySeason(season int) ([]*models.GrandPrix,
 			"where gp_season = $1",
 		season)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error from db, error: %w", err)
 	}
 	for rows.Next() {
 		gp_temp := &models.GrandPrix{}
@@ -64,7 +64,7 @@ func (pgRepo *psqlGPRepository) GetAllByPlace(place string) ([]*models.GrandPrix
 			"where gp_place = $1",
 		place)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error from db, error: %w", err)
 	}
 	for rows.Next() {
 		gp_temp := &models.GrandPrix{}
@@ -86,7 +86,7 @@ func (pgRepo *psqlGPRepository) GetGPById(id int) (*models.GrandPrix, error) {
 			"where gp_id = $1",
 		id)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error from db, error: %w", err)
 	}
 	return gp, nil
 }
@@ -105,8 +105,7 @@ func (pgRepo *psqlGPRepository) Create(grandPrix *models.GrandPrix) (int, error)
 		grandPrix.TrackId,
 	).Scan(&id)
 	if err != nil {
-		fmt.Println(err)
-		return 0, err
+		return 0, fmt.Errorf("error from db, error: %w", err)
 	}
 	return id, nil
 }
@@ -129,7 +128,7 @@ func (pgRepo *psqlGPRepository) Update(newGrandPrix *models.GrandPrix) error {
 		newGrandPrix.TrackId,
 		newGrandPrix.ID)
 	if err != nil {
-		return err
+		return fmt.Errorf("error from db, error: %w", err)
 	}
 	return nil
 }
@@ -142,7 +141,7 @@ func (pgRepo *psqlGPRepository) UpdateGPName(id int, newName string) error {
 		newName,
 		id)
 	if err != nil {
-		return err
+		return fmt.Errorf("error from db, error: %w", err)
 	}
 	return nil
 }
@@ -153,7 +152,7 @@ func (pgRepo *psqlGPRepository) Delete(id int) error {
 			"where gp_id = $1",
 		id)
 	if err != nil {
-		return err
+		return fmt.Errorf("error from db, error: %w", err)
 	}
 	return nil
 }

@@ -1,6 +1,7 @@
 package postgresql
 
 import (
+	"fmt"
 	"github.com/SweetBloody/bmstu_web/backend/internal/pkg/models"
 	"github.com/jmoiron/sqlx"
 )
@@ -30,7 +31,7 @@ func (pgRepo *psqlQualResultRepository) GetAll() ([]*models.QualResultView, erro
 			"join teams t on q.team_id = t.team_id " +
 			"join grandprix g on g.gp_id = q.gp_id")
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error from db, error: %w", err)
 	}
 	for rows.Next() {
 		res := &models.QualResultView{}
@@ -55,7 +56,7 @@ func (pgRepo *psqlQualResultRepository) GetAllWithId() ([]*models.QualResult, er
 			"gp_id " +
 			"from qualificationresults")
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error from db, error: %w", err)
 	}
 	for rows.Next() {
 		res := &models.QualResult{}
@@ -86,7 +87,7 @@ func (pgRepo *psqlQualResultRepository) GetQualResultById(id int) (*models.QualR
 			"where qual_id = $1",
 		id)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error from db, error: %w", err)
 	}
 	return results, nil
 }
@@ -106,7 +107,7 @@ func (pgRepo *psqlQualResultRepository) GetQualResultByIdWithId(id int) (*models
 			"where qual_id = $1",
 		id)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error from db, error: %w", err)
 	}
 	return result, nil
 }
@@ -128,7 +129,7 @@ func (pgRepo *psqlQualResultRepository) GetQualResultsOfGP(gp_id int) ([]*models
 		gp_id)
 	if err != nil {
 
-		return nil, err
+		return nil, fmt.Errorf("error from db, error: %w", err)
 	}
 	for rows.Next() {
 		qual_temp := &models.QualResultView{}
@@ -154,8 +155,7 @@ func (pgRepo *psqlQualResultRepository) GetQualResultsOfGPWithId(gp_id int) ([]*
 			"where gp_id = $1",
 		gp_id)
 	if err != nil {
-
-		return nil, err
+		return nil, fmt.Errorf("error from db, error: %w", err)
 	}
 	for rows.Next() {
 		qual_temp := &models.QualResult{}
@@ -183,7 +183,7 @@ func (pgRepo *psqlQualResultRepository) Create(result *models.QualResult) (int, 
 		result.GPId,
 	).Scan(&id)
 	if err != nil {
-		return 0, err
+		return 0, fmt.Errorf("error from db, error: %w", err)
 	}
 	return id, nil
 }
@@ -208,7 +208,7 @@ func (pgRepo *psqlQualResultRepository) Update(newResult *models.QualResult) err
 		newResult.GPId,
 		newResult.ID)
 	if err != nil {
-		return err
+		return fmt.Errorf("error from db, error: %w", err)
 	}
 	return nil
 }
@@ -219,7 +219,7 @@ func (pgRepo *psqlQualResultRepository) Delete(id int) error {
 			"where qual_id = $1",
 		id)
 	if err != nil {
-		return err
+		return fmt.Errorf("error from db, error: %w", err)
 	}
 	return nil
 }

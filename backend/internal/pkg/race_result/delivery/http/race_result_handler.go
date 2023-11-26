@@ -20,11 +20,11 @@ func NewRaceResultHandler(m *mux.Router, raceResultUsecase models.RaceResultUsec
 		raceResultUsecase: raceResultUsecase,
 	}
 
-	m.Handle("/api/race_results", middleware.AuthMiddleware(http.HandlerFunc(handler.Create), "admin")).Methods("POST")
+	m.Handle("/api/grandprix/{gp_id}/race_results", middleware.AuthMiddleware(http.HandlerFunc(handler.Create), "admin")).Methods("POST")
 	//m.Handle("/api/race_results", middleware.AuthMiddleware(http.HandlerFunc(handler.GetAll), "admin", "user")).Methods("GET")
 	//m.Handle("/api/race_results/{id}", middleware.AuthMiddleware(http.HandlerFunc(handler.GetRaceResultById), "admin", "user")).Methods("GET")
-	m.Handle("/api/race_results/{id}", middleware.AuthMiddleware(http.HandlerFunc(handler.Update), "admin")).Methods("PUT")
-	m.Handle("/api/race_results/{id}", middleware.AuthMiddleware(http.HandlerFunc(handler.Delete), "admin")).Methods("DELETE")
+	m.Handle("/api/grandprix/{gp_id}/race_results/{id}", middleware.AuthMiddleware(http.HandlerFunc(handler.Update), "admin")).Methods("PUT")
+	m.Handle("/api/grandprix/{gp_id}/race_results/{id}", middleware.AuthMiddleware(http.HandlerFunc(handler.Delete), "admin")).Methods("DELETE")
 }
 
 //func (handler *raceResultHandler) GetAll(w http.ResponseWriter, r *http.Request) {

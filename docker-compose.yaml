@@ -53,6 +53,8 @@ services:
     networks:
       - postgres_network
       - nginx_network
+    ports:
+      - "8082:8080"
 
   webapp2:
     container_name: webapp_container2

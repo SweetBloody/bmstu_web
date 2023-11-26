@@ -1,0 +1,210 @@
+type Driver {
+  ID: Int!
+  Name: String!
+  Country: String!
+  BirthDate: String!
+}
+
+type Standings {
+  ID: Int!
+  Season: Int!
+  DriverName: String!
+  TeamName: String!
+  Score: Int!
+}
+
+type GrandPrix {
+  ID: Int!
+  Season: Int!
+  Name: String!
+  DateNum: Int!
+  Month: String!
+  Place: String!
+  TrackId: Int!
+}
+
+type QualResult {
+  ID: Int!
+  DriverPlace: Int!
+  DriverId: Int!
+  TeamId: Int!
+  Q1time: Timestamp!
+  Q2time: Timestamp!
+  Q3time: Timestamp!
+  GPId: Int!
+}
+
+type QualResultView {
+  ID: Int!
+  DriverPlace: Int!
+  DriverName: String!
+  TeamName: String!
+  Q1time: Timestamp!
+  Q2time: Timestamp!
+  Q3time: Timestamp!
+  GPName: String!
+}
+
+type RaceResult {
+  ID: Int!
+  DriverPlace: Int!
+  DriverId: Int!
+  TeamId: Int!
+  GPId: Int!
+}
+
+type RaceResultView {
+  ID: Int!
+  DriverPlace: Int!
+  DriverName: String!
+  TeamName: String!
+  GPName: String!
+}
+
+type Team {
+  ID: Int!
+  Name: String!
+  Country: String!
+  Base: String!
+}
+
+type Track {
+  ID: Int!
+  Name: String!
+  Country: String!
+  Town: String!
+}
+
+type User {
+  ID: Int!
+  Login: String!
+  Password: String!
+  Role: String!
+}
+
+input DriverInput {
+  ID: Int!
+  Name: String!
+  Country: String!
+  BirthDate: String!
+}
+
+input StandingsInput {
+  ID: Int!
+  Season: Int!
+  DriverName: String!
+  TeamName: String!
+  Score: Int!
+}
+
+input GrandPrixInput {
+  ID: Int!
+  Season: Int!
+  Name: String!
+  DateNum: Int!
+  Month: String!
+  Place: String!
+  TrackId: Int!
+}
+
+input QualResultInput {
+  ID: Int!
+  DriverPlace: Int!
+  DriverId: Int!
+  TeamId: Int!
+  Q1time: Timestamp!
+  Q2time: Timestamp!
+  Q3time: Timestamp!
+  GPId: Int!
+}
+
+input RaceResultInput {
+  ID: Int!
+  DriverPlace: Int!
+  DriverId: Int!
+  TeamId: Int!
+  GPId: Int!
+}
+
+input TeamInput {
+  ID: Int!
+  Name: String!
+  Country: String!
+  Base: String!
+}
+
+input TrackInput {
+  ID: Int!
+  Name: String!
+  Country: String!
+  Town: String!
+}
+
+input UserInput {
+  Login: String!
+  Password: String!
+  Role: String!
+}
+
+input UserLogIn {
+  Login: String!
+  Password: String!
+}
+
+scalar Timestamp
+
+type Query {
+  drivers(season: Int): [Driver]!
+  driver(id: Int!): Driver!
+  driversStandings: [Standings]!
+
+  grandPrixes(season: Int): [GrandPrix]!
+  grandPrix(id: Int!): GrandPrix!
+
+  qualResults(gpId: Int!): [QualResultView]!
+
+  raceResults(gpId: Int!): [RaceResultView]!
+
+  teams: [Team]!
+
+  tracks: [Track]!
+
+  users: [User!]!
+  user(id: Int!): User!
+}
+
+type Mutation {
+  createDriver(data: DriverInput!): Driver!
+  updateDriver(id: Int!, data: DriverInput!): Driver!
+  deleteDriver(id: Int!): Driver!
+
+  createGrandPrix(data: GrandPrixInput!): GrandPrix!
+  updateGrandPrix(id: Int!, data: GrandPrixInput!): GrandPrix!
+  deleteGrandPrix(id: Int!): GrandPrix!
+
+  createQualResult(data: QualResultInput!): QualResult!
+  updateQualResult(id: Int!, data: QualResultInput!): QualResult!
+  deleteQualResult(id: Int!): QualResult!
+
+  createRaceResult(data: RaceResultInput!): RaceResult!
+  updateRaceResult(id: Int!, data: RaceResultInput!): RaceResult!
+  deleteRaceResult(id: Int!): RaceResult!
+
+  createTeam(data: TeamInput!): Team!
+  updateTeam(id: Int!, data: TeamInput!): Team!
+  deleteTeam(id: Int!): Team!
+
+  createTrack(data: TrackInput!): Track!
+  updateTrack(id: Int!, data: TrackInput!): Track!
+  deleteTrack(id: Int!): Track!
+
+  createUser(data: UserLogIn!): User!
+  updateUser(id: Int!, data: UserInput!): User!
+  updateUserRole(id: Int!, role: String!): User!
+  deleteUser(id: Int!): User!
+
+
+  logIn(data: UserLogIn!): String!
+  logOut: String!
+  register(data: UserLogIn!): String!
+}
